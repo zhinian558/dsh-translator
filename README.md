@@ -1,5 +1,7 @@
 # @deepseek-ai/dsh-translator
 
+**English** · [简体中文](README.zh.md)
+
 Floating AI translation window for the Web GUI. The browser half (`./client`)
 registers one entry into the frame-wide `shell.overlay` slot: a draggable,
 resizable window with a language picker, source/result panes, and a footer
@@ -48,7 +50,7 @@ your own scope.
 
 | Route | Purpose |
 |---|---|
-| `POST /translator/translate` | One chat-completions translation. Body: `{text, source, target}` where `source` may be `'auto'`. Returns the translated text, token usage, the serving model, an estimated USD cost (pricing from the settings section), and latency. |
+| `POST /translator/translate` | One chat-completions translation. Body: `{text, source, target}` where `source` may be `'auto'`. Returns the translated text, token usage, the serving model, an estimated cost in CNY (¥, pricing from the settings section), and latency. |
 | `GET /translator/balance` | Provider account balance. DeepSeek uses `/user/balance`; OpenAI uses the public credit-grants endpoint when the base URL is the default. Other OpenAI-compatible endpoints report `supported: false`. |
 | `GET /translator/status` | Resolved provider/model/base URL, whether a key is configured and from which layer, and whether balance queries are supported. |
 
@@ -60,10 +62,11 @@ All responses are JSON with `no-store`; business failures return HTTP 200 with
 
 The `translator` namespace carries the user-editable subset: `provider`
 (`deepseek` | `openai`), `baseUrl`, `model`, `apiKey` (secret, optional),
-`apiKeyEnv` (credential reference, default `DEEPSEEK_API_KEY`), `inputPrice` /
-`outputPrice` (USD per 1M tokens, for the cost estimate), and `temperature`.
-The namespace is served automatically to the Settings → Plugins configuration
-surface; the window's own settings popover writes the same section.
+`apiKeyEnv` (credential reference, default `DEEPSEEK_API_KEY`), six CNY prices
+(peak `inputPrice` / `cacheHitInputPrice` / `outputPrice` and the `offPeak*`
+trio, per 1M tokens, for the cost estimate), and `temperature`. The namespace
+is served automatically to the Settings → Plugins configuration surface; the
+window's own settings popover writes the same section.
 
 Key resolution order: the settings-section `apiKey` literal, then the
 `credentials` seam for the named reference (inherited environment over the

@@ -1,5 +1,7 @@
 # @deepseek-ai/dsh-translator
 
+[English](README.md) · **简体中文**
+
 Web GUI 的悬浮 AI 翻译窗口。浏览器端（`./client`）向全局 `shell.overlay` 插槽注册一个条目：可拖拽、可缩放窗口，包含语言选择、原文/译文面板，以及展示服务商账户余额和今日估算消耗的底部状态栏。所有服务商请求都在宿主端完成——宿主端暴露 `/translator/*` 三个普通路由和一个用户设置命名空间，API Key 永远不会随页面请求传出去。
 
 ## 安装
@@ -28,7 +30,7 @@ git 安装拉取的是**源码**而非构建产物：包内带 `prepare` 脚本�
 
 | 路由 | 用途 |
 |---|---|
-| `POST /translator/translate` | 一次对话补全翻译。请求体：`{text, source, target}`，`source` 可为 `'auto'`。返回译文、token 用量、所用模型、估算美元费用（按设置中的价格计算）与延迟。 |
+| `POST /translator/translate` | 一次对话补全翻译。请求体：`{text, source, target}`，`source` 可为 `'auto'`。返回译文、token 用量、所用模型、估算费用（人民币 ¥，按设置中的价格计算）与延迟。 |
 | `GET /translator/balance` | 服务商账户余额。DeepSeek 使用 `/user/balance`；OpenAI 在默认接口地址时使用公开的 credit-grants 端点。其他 OpenAI 兼容端点返回 `supported: false`。 |
 | `GET /translator/status` | 已生效的服务商/模型/接口地址、密钥是否已配置及来源层、是否支持余额查询。 |
 
@@ -36,7 +38,7 @@ git 安装拉取的是**源码**而非构建产物：包内带 `prepare` 脚本�
 
 ### 设置命名空间
 
-`translator` 命名空间承载用户可编辑子集：`provider`（`deepseek` | `openai`）、`baseUrl`、`model`、`apiKey`（secret，可选）、`apiKeyEnv`（凭据引用，默认 `DEEPSEEK_API_KEY`）、`inputPrice` / `outputPrice`（每 1M token 的美元价格，用于费用估算）、`temperature`。该命名空间会自动出现在 设置 → 插件 的配置页；窗口内的设置浮层写入同一个 section。
+`translator` 命名空间承载用户可编辑子集：`provider`（`deepseek` | `openai`）、`baseUrl`、`model`、`apiKey`（secret，可选）、`apiKeyEnv`（凭据引用，默认 `DEEPSEEK_API_KEY`）、六个人民币单价（高峰 `inputPrice` / `cacheHitInputPrice` / `outputPrice` 与空闲 `offPeak*` 三件套，每 1M token，用于费用估算）、`temperature`。该命名空间会自动出现在 设置 → 插件 的配置页；窗口内的设置浮层写入同一个 section。
 
 密钥解析顺序：设置中的 `apiKey` 字面量，其次 `credentials` 服务按引用名解析（环境变量优先于托管文件）。默认值：DeepSeek `https://api.deepseek.com` + `deepseek-chat`；OpenAI `https://api.openai.com/v1` + `gpt-4o-mini`。
 
