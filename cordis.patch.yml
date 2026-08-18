@@ -1,0 +1,6 @@
+# The dsh-translator bundle layer: mounts the translator plugin row. Both the
+# host half (routes + settings namespace) and the browser half (dsh.client
+# scan) activate once a profile lists this bundle in dsh.profile.bundles.
+- insert:
+    - id: translator
+      name: '@deepseek-ai/dsh-translator'

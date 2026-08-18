@@ -1,0 +1,483 @@
+/* Translator floating window — theme tokens follow the shell's real dsw
+   aliases (--dsw-alias-label-*, --dsw-alias-bg-layer-*, --dsw-alias-border-*,
+   --dsw-alias-button-primary-fill, --dsw-alias-state-*), which are defined for
+   both light and dark themes. Never reference --dsw-alias-text-* /
+   --dsw-alias-bg-primary: those are not defined by the theme and their
+   fallbacks are dark, which makes text invisible in dark mode. */
+
+.window {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  min-width: 320px;
+  min-height: 280px;
+  z-index: 60;
+  border-radius: 12px;
+  border: 1px solid var(--dsw-alias-border-l1, rgba(0, 0, 0, 0.12));
+  background: var(--dsw-alias-bg-layer-2, #ffffff);
+  color: var(--dsw-alias-label-primary, #1f2328);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px 8px 14px;
+  cursor: grab;
+  user-select: none;
+  background: var(--dsw-alias-bg-layer-3, #f3f4f6);
+  border-bottom: 1px solid var(--dsw-alias-border-l1, rgba(0, 0, 0, 0.08));
+}
+
+.header:active {
+  cursor: grabbing;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: none;
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--dsw-alias-label-secondary, #57606a);
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.iconButton:hover {
+  background: var(--dsw-alias-interactive-bg-hover, rgba(0, 0, 0, 0.06));
+}
+
+.iconButton[data-active] {
+  background: color-mix(in srgb, var(--dsw-alias-state-business-primary, #2563eb) 14%, transparent);
+  color: var(--dsw-alias-state-business-primary, #2563eb);
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+}
+
+.langRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  flex: none;
+}
+
+.langField {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.langLabel {
+  font-size: 11px;
+  color: var(--dsw-alias-label-tertiary, #8b949e);
+}
+
+.langSelect {
+  width: 100%;
+  height: 30px;
+  padding: 0 8px;
+  border-radius: 8px;
+  border: 1px solid var(--dsw-alias-border-l1, rgba(0, 0, 0, 0.14));
+  background: var(--dsw-alias-bg-layer-1, #ffffff);
+  color: var(--dsw-alias-label-primary, #1f2328);
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+}
+
+.langSelect:focus {
+  border-color: var(--dsw-alias-state-business-primary, #2563eb);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--dsw-alias-state-business-primary, #2563eb) 22%, transparent);
+}
+
+.swapButton {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid var(--dsw-alias-border-l1, rgba(0, 0, 0, 0.14));
+  background: var(--dsw-alias-bg-layer-1, #ffffff);
+  color: var(--dsw-alias-label-secondary, #57606a);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.swapButton:hover {
+  border-color: var(--dsw-alias-state-business-primary, #2563eb);
+  color: var(--dsw-alias-state-business-primary, #2563eb);
+}
+
+.input,
+.output {
+  flex: 1 1 40%;
+  min-height: 72px;
+  resize: none;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--dsw-alias-border-l1, rgba(0, 0, 0, 0.14));
+  background: var(--dsw-alias-bg-layer-1, #ffffff);
+  color: var(--dsw-alias-label-primary, #1f2328);
+  font-size: 13px;
+  line-height: 1.5;
+  outline: none;
+  font-family: inherit;
+}
+
+.input:focus {
+  border-color: var(--dsw-alias-state-business-primary, #2563eb);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--dsw-alias-state-business-primary, #2563eb) 22%, transparent);
+}
+
+.output {
+  flex: 1 1 60%;
+  background: var(--dsw-alias-bg-layer-3, #f6f8fa);
+  cursor: text;
+  user-select: text;
+}
+
+.output::placeholder,
+.input::placeholder {
+  color: var(--dsw-alias-label-caption, #8b949e);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex: none;
+}
+
+.primary,
+.secondary {
+  height: 30px;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease, opacity 120ms ease;
+}
+
+.primary {
+  border: 1px solid var(--dsw-alias-state-business-primary, #2563eb);
+  background: var(--dsw-alias-state-business-primary, #2563eb);
+  color: #ffffff;
+}
+
+.primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.secondary {
+  border: 1px solid var(--dsw-alias-border-l1, rgba(0, 0, 0, 0.14));
+  background: var(--dsw-alias-bg-layer-1, #ffffff);
+  color: var(--dsw-alias-label-secondary, #57606a);
+}
+
+.secondary:hover:not(:disabled) {
+  border-color: var(--dsw-alias-border-l2, rgba(0, 0, 0, 0.24));
+}
+
+.primary:disabled,
+.secondary:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.error {
+  flex: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.45;
+  background: color-mix(in srgb, var(--dsw-alias-state-error-primary, #d1242f) 12%, transparent);
+  color: var(--dsw-alias-state-error-primary, #d1242f);
+  word-break: break-word;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-top: 1px solid var(--dsw-alias-border-l1, rgba(0, 0, 0, 0.08));
+  background: var(--dsw-alias-bg-layer-3, #f3f4f6);
+  font-size: 11.5px;
+  color: var(--dsw-alias-label-secondary, #57606a);
+  flex: none;
+  min-height: 30px;
+}
+
+.balanceButton {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-size: 11.5px;
+  color: var(--dsw-alias-label-secondary, #57606a);
+  cursor: pointer;
+}
+
+.balanceButton:hover {
+  color: var(--dsw-alias-label-primary, #1f2328);
+}
+
+.footerLabel {
+  color: var(--dsw-alias-label-tertiary, #8b949e);
+}
+
+.footerValue {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.footerDot {
+  color: var(--dsw-alias-label-tertiary, #8b949e);
+}
+
+.today {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.lastMeta {
+  margin-left: auto;
+  color: var(--dsw-alias-label-tertiary, #8b949e);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.settingsPopover {
+  position: absolute;
+  top: 44px;
+  right: 10px;
+  width: 300px;
+  max-height: calc(100% - 64px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--dsw-alias-border-l1, rgba(0, 0, 0, 0.14));
+  background: var(--dsw-alias-bg-overlay, #ffffff);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  z-index: 70;
+}
+
+.settingsTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.settingsTitle {
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.settingsClose {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--dsw-alias-label-tertiary, #8b949e);
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+
+.settingsClose:hover {
+  background: var(--dsw-alias-interactive-bg-hover, rgba(0, 0, 0, 0.06));
+  color: var(--dsw-alias-label-primary, #1f2328);
+}
+
+.settingsField {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 11.5px;
+  color: var(--dsw-alias-label-secondary, #57606a);
+}
+
+.settingsField input,
+.settingsField select {
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 7px;
+  border: 1px solid var(--dsw-alias-border-l1, rgba(0, 0, 0, 0.14));
+  background: var(--dsw-alias-bg-layer-1, #ffffff);
+  color: var(--dsw-alias-label-primary, #1f2328);
+  font-size: 12.5px;
+  outline: none;
+  font-family: inherit;
+}
+
+.settingsField input:focus,
+.settingsField select:focus {
+  border-color: var(--dsw-alias-state-business-primary, #2563eb);
+}
+
+.settingsRow {
+  display: flex;
+  gap: 8px;
+}
+
+.settingsRow .settingsField {
+  flex: 1;
+  min-width: 0;
+}
+
+.settingsGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid var(--dsw-alias-border-l1, rgba(0, 0, 0, 0.1));
+  border-radius: 8px;
+  background: var(--dsw-alias-bg-layer-1, #ffffff);
+}
+
+.settingsGroupLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--dsw-alias-label-tertiary, #8b949e);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.priceHint {
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--dsw-alias-label-tertiary, #8b949e);
+}
+
+.settingsActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.settingsActions .primary,
+.settingsActions .secondary {
+  height: 28px;
+  font-size: 12.5px;
+}
+
+.resizeHandle {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 16px;
+  height: 16px;
+  cursor: nwse-resize;
+  touch-action: none;
+  z-index: 75;
+}
+
+.resizeHandle::after {
+  content: '';
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid var(--dsw-alias-label-tertiary, #8b949e);
+  border-bottom: 2px solid var(--dsw-alias-label-tertiary, #8b949e);
+  border-bottom-right-radius: 2px;
+  opacity: 0.65;
+}
+
+/* Floating action button. Closed: DeepSeek business blue + translate glyph.
+   Open: the button becomes the window's close control — inverted surface
+   colors + a ✕ glyph and a soft blue ring, so the active state reads at a
+   glance without rotating the icon. */
+.fab {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--dsw-alias-border-l1, rgba(0, 0, 0, 0.1));
+  background: var(--dsw-alias-state-business-primary, #2563eb);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+  pointer-events: auto;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease,
+    box-shadow 160ms ease, transform 120ms ease, filter 140ms ease;
+  z-index: 60;
+}
+
+.fab:hover {
+  transform: translateY(-1px) scale(1.04);
+  filter: brightness(1.08);
+}
+
+.fab[data-open] {
+  background: var(--dsw-alias-bg-layer-3, #f3f4f6);
+  border-color: var(--dsw-alias-border-l2, rgba(0, 0, 0, 0.3));
+  color: var(--dsw-alias-label-primary, #1f2328);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--dsw-alias-state-business-primary, #2563eb) 28%, transparent),
+    0 6px 18px rgba(0, 0, 0, 0.22);
+}
+
+.fab[data-open]:hover {
+  transform: translateY(-1px) scale(1.04);
+  filter: brightness(1.05);
+}
