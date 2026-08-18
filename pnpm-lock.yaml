@@ -11,6 +11,12 @@ importers:
       '@deepseek-ai/schemastery':
         specifier: ^3.18.1
         version: 3.18.1
+      lightningcss:
+        specifier: ^1.33.0
+        version: 1.33.0
+      tsdown:
+        specifier: ^0.22.0
+        version: 0.22.14(typescript@7.0.2)
     devDependencies:
       '@deepseek-ai/cordis':
         specifier: ^4.0.1
@@ -48,15 +54,9 @@ importers:
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
-      lightningcss:
-        specifier: ^1.33.0
-        version: 1.33.0
       react:
         specifier: ^18.2.0
         version: 18.3.1
-      tsdown:
-        specifier: ^0.22.0
-        version: 0.22.14(typescript@7.0.2)
       typescript:
         specifier: ^7.0.0
         version: 7.0.2
