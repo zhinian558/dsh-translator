@@ -2,6 +2,11 @@
 
 **English** · [简体中文](README.zh.md)
 
+![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)
+![Platform: DeepSeek Harness](https://img.shields.io/badge/platform-DeepSeek%20Harness-4f8cff.svg)
+![Type: DSH plugin (Web GUI)](https://img.shields.io/badge/type-dsh%20plugin%20(Web%20GUI)-blue.svg)
+![DSH: 0.1.0-rc.7](https://img.shields.io/badge/dsh-0.1.0--rc.7-1f6feb.svg)
+
 Floating AI translation window for the Web GUI. The browser half (`./client`)
 registers one entry into the frame-wide `shell.overlay` slot: a draggable,
 resizable window with a language picker, source/result panes, and a footer

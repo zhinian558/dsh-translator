@@ -2,6 +2,11 @@
 
 [English](README.md) · **简体中文**
 
+![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)
+![Platform: DeepSeek Harness](https://img.shields.io/badge/platform-DeepSeek%20Harness-4f8cff.svg)
+![Type: DSH plugin (Web GUI)](https://img.shields.io/badge/type-dsh%20plugin%20(Web%20GUI)-blue.svg)
+![DSH: 0.1.0-rc.7](https://img.shields.io/badge/dsh-0.1.0--rc.7-1f6feb.svg)
+
 Web GUI 的悬浮 AI 翻译窗口。浏览器端（`./client`）向全局 `shell.overlay` 插槽注册一个条目：可拖拽、可缩放窗口，包含语言选择、原文/译文面板，以及展示服务商账户余额和今日估算消耗的底部状态栏。所有服务商请求都在宿主端完成——宿主端暴露 `/translator/*` 三个普通路由和一个用户设置命名空间，API Key 永远不会随页面请求传出去。
 
 ## 安装
