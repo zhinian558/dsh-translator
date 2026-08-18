@@ -55,9 +55,13 @@ function sourceAssetPath(source: string, importer: string): string {
 
 export default [
   // ── node half ─────────────────────────────────────────────────────────────
+  // Entries come from src/, not lib/types: the `prepare` script (run on git
+  // installs with production dependencies only) must be able to build the
+  // whole package from source without the tsc-emitted types. tsc is only
+  // responsible for the lib/types declaration output during a full `build`.
   {
     name: PLUGIN_ID,
-    entry: ['lib/types/index.js', 'lib/types/invariant.js'],
+    entry: ['src/index.ts', 'src/invariant.ts'],
     outDir: 'lib',
     format: ['esm'],
     platform: 'node',
