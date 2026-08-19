@@ -1,10 +1,10 @@
-# @deepseek-ai/dsh-translator
+# @zhinian558/dsh-translator
 
 **English** · [简体中文](README.zh.md)
 
 ![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)
 ![Platform: DeepSeek Harness](https://img.shields.io/badge/platform-DeepSeek%20Harness-4f8cff.svg)
-![Type: DSH plugin (Web GUI)](https://img.shields.io/badge/type-dsh%20plugin%20(Web%20GUI)-blue.svg)
+![Type: DSH plugin (Web GUI)](<https://img.shields.io/badge/type-dsh%20plugin%20(Web%20GUI)-blue.svg>)
 ![DSH: 0.1.0-rc.7](https://img.shields.io/badge/dsh-0.1.0--rc.7-1f6feb.svg)
 
 Floating AI translation window for the Web GUI. The browser half (`./client`)
@@ -22,10 +22,10 @@ browser half). Install it into any dsh profile with the `dsh plugin` CLI:
 
 ```sh
 # from a git repository (builds on install via the prepare script)
-dsh plugin --profile web add github:<your-org>/dsh-translator
+dsh plugin --profile web add github:zhinian558/dsh-translator
 
 # or, once published to npm
-dsh plugin --profile web add @deepseek-ai/dsh-translator
+dsh plugin --profile web add @zhinian558/dsh-translator
 ```
 
 The `dsh.bundle` layer inserts the `translator` row (host routes + settings
@@ -35,7 +35,7 @@ Web GUI's `shell.overlay` slot. Restart dsh and refresh the page afterwards.
 Git installs fetch **sources**, not built artifacts: the package ships a
 `prepare` script that builds `lib/` at install time, and pnpm ≥10 requires
 allowlisting it in the profile's `pnpm-workspace.yaml` (`allowBuilds:
-'@deepseek-ai/dsh-translator': true`) — see the official
+'@zhinian558/dsh-translator': true`) — see the official
 [packaging doc](https://github.com/deepseek-ai/deepseek-harness/blob/main/docs/user/develop/basic/publish.md).
 npm/tarball installs carry prebuilt `lib/` and need no permission.
 
@@ -53,11 +53,11 @@ your own scope.
 
 ### Routes
 
-| Route | Purpose |
-|---|---|
+| Route                        | Purpose                                                                                                                                                                                                                                     |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `POST /translator/translate` | One chat-completions translation. Body: `{text, source, target}` where `source` may be `'auto'`. Returns the translated text, token usage, the serving model, an estimated cost in CNY (¥, pricing from the settings section), and latency. |
-| `GET /translator/balance` | Provider account balance. DeepSeek uses `/user/balance`; OpenAI uses the public credit-grants endpoint when the base URL is the default. Other OpenAI-compatible endpoints report `supported: false`. |
-| `GET /translator/status` | Resolved provider/model/base URL, whether a key is configured and from which layer, and whether balance queries are supported. |
+| `GET /translator/balance`    | Provider account balance. DeepSeek uses `/user/balance`; OpenAI uses the public credit-grants endpoint when the base URL is the default. Other OpenAI-compatible endpoints report `supported: false`.                                       |
+| `GET /translator/status`     | Resolved provider/model/base URL, whether a key is configured and from which layer, and whether balance queries are supported.                                                                                                              |
 
 All responses are JSON with `no-store`; business failures return HTTP 200 with
 `ok: false` and a stable `code` (`bad-request`, `no-api-key`, `provider`,
@@ -82,8 +82,8 @@ managed document). Defaults: DeepSeek at `https://api.deepseek.com`,
 
 ```ts
 interface Config {
-  requestTimeoutMs?: number  // default 60000
-  maxBodyBytes?: number      // default 262144
+  requestTimeoutMs?: number; // default 60000
+  maxBodyBytes?: number; // default 262144
 }
 ```
 
@@ -105,7 +105,7 @@ comes from:
 - **Balance** — a live provider query (`GET /translator/balance`; DeepSeek
   `/user/balance`, OpenAI credit grants on the public endpoint). Never stored
   locally.
-- **Today (今日消耗)** — an *estimate in CNY (¥)*, not provider billing; the
+- **Today (今日消耗)** — an _estimate in CNY (¥)_, not provider billing; the
   official DeepSeek bill in your account console is always authoritative.
   Every successful translation records the request's estimated cost into the
   localStorage ledger under the local date; the footer sums today's rows. The
@@ -122,8 +122,9 @@ comes from:
   the prices aligned with your provider's billing for accuracy. The ledger
   also counts only translations made through this window — other DSH usage is
   not included.
-- **Right-side meta (`deepseek-chat · 123 tokens · 0.5s`)** — the *last
-  completed* translation: the serving model, the total tokens reported by the
+
+- **Right-side meta (`deepseek-chat · 123 tokens · 0.5s`)** — the _last
+  completed_ translation: the serving model, the total tokens reported by the
   provider for that request (`usage.total_tokens`, input + output — real
   provider usage, not an estimate), and the host-measured round-trip latency
   in seconds.
@@ -134,20 +135,20 @@ The `translator` settings section is editable from the window's ⚙ popover and
 from Settings → Plugins; both write the same document (`$DSH_HOME/settings.yaml`
 under `translator:`).
 
-| Field | Meaning | Default |
-|---|---|---|
-| `provider` | Provider family: `deepseek` (balance endpoint, DeepSeek defaults) or `openai` (OpenAI-compatible endpoints). | `deepseek` |
-| `baseUrl` | API base URL. The plugin appends `/chat/completions` (and `/user/balance` for balance). Blank inherits the provider default: `https://api.deepseek.com` / `https://api.openai.com/v1`. Works with OpenAI-compatible gateways (one-api, new-api, vLLM, …). Must not include the `/chat/completions` suffix. | blank |
-| `model` | Model id sent to the provider. Blank inherits the provider default: `deepseek-chat` / `gpt-4o-mini`. | blank |
-| `apiKey` | Optional API key override (write-only; never read back). When set it wins over DSH credentials; blank falls back to the DSH credential seam named by `apiKeyEnv`. | blank |
-| `apiKeyEnv` | Credential reference (environment-variable name) resolved through the DSH credentials service when no literal `apiKey` is set: inherited environment first, then `$DSH_HOME/.credentials.yaml`. Advanced field — not rendered in the ⚙ popover; edit it in Settings → Plugins or the settings document. | `DEEPSEEK_API_KEY` |
-| `inputPrice` | CNY per 1M **input** tokens (cache miss), **peak**; used only for the 今日消耗 estimate. Never sent to the provider. | `3.0` |
-| `cacheHitInputPrice` | CNY per 1M **input** tokens served from the prompt cache, **peak**. | `0.1` |
-| `outputPrice` | CNY per 1M **output** tokens, **peak**. | `9.0` |
-| `offPeakInputPrice` | CNY per 1M **input** tokens (cache miss), **off-peak**. | `1.5` |
-| `offPeakCacheHitInputPrice` | CNY per 1M **input** tokens served from the prompt cache, **off-peak**. | `0.05` |
-| `offPeakOutputPrice` | CNY per 1M **output** tokens, **off-peak**. | `4.5` |
-| `temperature` | Sampling temperature passed to the provider (0–2). Lower is more deterministic, higher more varied; `0.3` suits translation. | `0.3` |
+| Field                       | Meaning                                                                                                                                                                                                                                                                                                    | Default            |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| `provider`                  | Provider family: `deepseek` (balance endpoint, DeepSeek defaults) or `openai` (OpenAI-compatible endpoints).                                                                                                                                                                                               | `deepseek`         |
+| `baseUrl`                   | API base URL. The plugin appends `/chat/completions` (and `/user/balance` for balance). Blank inherits the provider default: `https://api.deepseek.com` / `https://api.openai.com/v1`. Works with OpenAI-compatible gateways (one-api, new-api, vLLM, …). Must not include the `/chat/completions` suffix. | blank              |
+| `model`                     | Model id sent to the provider. Blank inherits the provider default: `deepseek-chat` / `gpt-4o-mini`.                                                                                                                                                                                                       | blank              |
+| `apiKey`                    | Optional API key override (write-only; never read back). When set it wins over DSH credentials; blank falls back to the DSH credential seam named by `apiKeyEnv`.                                                                                                                                          | blank              |
+| `apiKeyEnv`                 | Credential reference (environment-variable name) resolved through the DSH credentials service when no literal `apiKey` is set: inherited environment first, then `$DSH_HOME/.credentials.yaml`. Advanced field — not rendered in the ⚙ popover; edit it in Settings → Plugins or the settings document.    | `DEEPSEEK_API_KEY` |
+| `inputPrice`                | CNY per 1M **input** tokens (cache miss), **peak**; used only for the 今日消耗 estimate. Never sent to the provider.                                                                                                                                                                                       | `3.0`              |
+| `cacheHitInputPrice`        | CNY per 1M **input** tokens served from the prompt cache, **peak**.                                                                                                                                                                                                                                        | `0.1`              |
+| `outputPrice`               | CNY per 1M **output** tokens, **peak**.                                                                                                                                                                                                                                                                    | `9.0`              |
+| `offPeakInputPrice`         | CNY per 1M **input** tokens (cache miss), **off-peak**.                                                                                                                                                                                                                                                    | `1.5`              |
+| `offPeakCacheHitInputPrice` | CNY per 1M **input** tokens served from the prompt cache, **off-peak**.                                                                                                                                                                                                                                    | `0.05`             |
+| `offPeakOutputPrice`        | CNY per 1M **output** tokens, **off-peak**.                                                                                                                                                                                                                                                                | `4.5`              |
+| `temperature`               | Sampling temperature passed to the provider (0–2). Lower is more deterministic, higher more varied; `0.3` suits translation.                                                                                                                                                                               | `0.3`              |
 
 The price defaults follow DeepSeek's official list-price table (CNY per 1M
 tokens), **`deepseek-v4-flash` row** — peak: input ¥3.0 (cache hit ¥0.1),
@@ -186,13 +187,13 @@ this package's contract.
 ## Known Limitations and Deferred Work
 
 - **Non-streaming responses** — translation results arrive in one completion;
-streaming output is deferred work.
+  streaming output is deferred work.
 - **Cost is an estimate** — the daily consumption shown in the footer is
-computed from token usage and the configured pricing, not from provider
-billing; see [Footer statistics](#footer-statistics). Providers that report
-per-request cost natively are not integrated.
+  computed from token usage and the configured pricing, not from provider
+  billing; see [Footer statistics](#footer-statistics). Providers that report
+  per-request cost natively are not integrated.
 - **Balance support is provider-specific** — only DeepSeek and the public
-OpenAI endpoint expose balance endpoints; other OpenAI-compatible endpoints
-show `余额 —`.
+  OpenAI endpoint expose balance endpoints; other OpenAI-compatible endpoints
+  show `余额 —`.
 - **Key writes are write-only** — the window can set the optional key but never
-reads it back; the Settings → Plugins card is the equivalent surface.
+  reads it back; the Settings → Plugins card is the equivalent surface.

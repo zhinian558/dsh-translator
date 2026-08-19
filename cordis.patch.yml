@@ -3,4 +3,4 @@
 # scan) activate once a profile lists this bundle in dsh.profile.bundles.
 - insert:
     - id: translator
-      name: '@deepseek-ai/dsh-translator'
+      name: '@zhinian558/dsh-translator'

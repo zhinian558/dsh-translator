@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-translator",
+  "name": "@zhinian558/dsh-translator",
   "description": "Floating AI translation window for the DeepSeek Harness Web GUI: multilingual translation through the DSH host, with provider balance and daily-usage display. Standalone plugin package.",
   "version": "0.1.0",
   "publishConfig": {

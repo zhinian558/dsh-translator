@@ -1,5 +1,5 @@
 /**
- * Standalone tsdown config for @deepseek-ai/dsh-translator.
+ * Standalone tsdown config for @zhinian558/dsh-translator.
  *
  * Mirrors the shared client-bundle preset of the deepseek-harness monorepo
  * (packages/client/tsdown.client.ts): emits the node-half lib (ESM) plus the
@@ -41,7 +41,7 @@ const GENERATED_REMOTE = /^@deepseek-ai\/dsh-[a-z0-9]+(?:-[a-z0-9]+)*\/remote$/
 const CSS_VIRTUAL_PREFIX = '\0dsh-css:'
 const CSS_VIRTUAL_SUFFIX = '.mjs'
 
-const PLUGIN_ID = '@deepseek-ai/dsh-translator'
+const PLUGIN_ID = '@zhinian558/dsh-translator'
 
 /** Resolve an emitted JS asset import against its source-tree counterpart. */
 function sourceAssetPath(source: string, importer: string): string {
